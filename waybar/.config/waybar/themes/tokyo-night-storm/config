@@ -1,44 +1,38 @@
 {
-    // General Settings
-    // Position TOP
     "layer": "top",
+    "position": "top",
+
+    "margin-top": 6,
     "margin-bottom": 0,
-    // Position BOTTOM
-    // "position": "bottom",
-    // "margin-top": 0,
-    // "margin-bottom": 14,
-    "margin-left": 0,
-    "margin-right": 0,
+    "margin-left": 10,
+    "margin-right": 10,
+
     "spacing": 0,
-    // Load Modules
+
     "include": [
-        "~/.config/waybar/themes/starter/modules.json"
+        "~/.config/waybar/themes/tokyo-night-storm/modules.json"
     ],
-    // Modules Left
+
     "modules-left": [
         "custom/appmenu",
-        "custom/settings",
-        "hyprland/window",
-        "custom/starter"
-    ],
-    // Modules Center
-    "modules-center": [
         "hyprland/workspaces"
     ],
-    // Modules Right    
+
+    "modules-center": [
+        "hyprland/window"
+    ],
+
     "modules-right": [
         "custom/updates",
-        "pulseaudio",
-        "bluetooth",
-        "battery",
-        "network",
-        "group/hardware",
         "custom/cliphist",
         "custom/hypridle",
-        "custom/hyprshade",
+        "pulseaudio",
+        "bluetooth",
+        "network",
+        "battery",
+        "group/hardware",
         "tray",
-        "custom/exit",
-        "custom/ml4w-welcome",
-        "clock"
+        "clock",
+        "custom/exit"
     ]
 }

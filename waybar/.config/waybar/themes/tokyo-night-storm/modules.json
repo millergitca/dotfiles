@@ -155,7 +155,7 @@
 
     // Rofi Application Launcher
     "custom/appmenu": {
-        "format": "Apps",
+        "format": "  Apps",
         "on-click": "rofi -show drun -replace",
         "on-click-right": "~/.config/hypr/scripts/keybindings.sh",
         "tooltip": false
@@ -201,13 +201,13 @@
     // CPU
     "cpu": {
         "format": "/ C {usage}% ",
-        "on-click": "alacritty -e htop"
+        "on-click": "ghostty -e btop"
     },
 
     // Memory
     "memory": {
         "format": "/ M {}% ",
-        "on-click": "alacritty -e htop"
+        "on-click": "ghostty -e btop"
     },
 
     // Harddisc space used
@@ -215,7 +215,7 @@
         "interval": 30,
         "format": "D {percentage_used}% ",
         "path": "/",
-        "on-click": "alacritty -e htop"
+        "on-click": "ghostty -e btop"
     },
 
     "hyprland/language": {
