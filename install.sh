@@ -54,9 +54,9 @@ if [[ -f "$DOTFILES/vscode/.config/Code/User/keybindings.json" ]]; then
     "$HOME/.config/Code/User/keybindings.json"
 fi
 
-link_file \
-  "$DOTFILES/hypr/.config/hypr/conf/custom.lua" \
-  "$HOME/.config/hypr/conf/custom.lua"
+link_file
+    "$DOTFILES/hypr/.config/hypr/custom.lua"
+    "$HOME/.config/hypr/custom.lua"
 
 if ! grep -Fq '.config/zsh/developer-tools.zsh' "$HOME/.zshrc"; then
   cp -a "$HOME/.zshrc" "$BACKUP/zshrc" 2>/dev/null || true
