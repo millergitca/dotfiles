@@ -1,0 +1,165 @@
+@define-color bg         #24283b;
+@define-color bg-dark    #1f2335;
+@define-color surface    #292e42;
+@define-color selection  #364a82;
+
+@define-color fg         #c0caf5;
+@define-color muted      #a9b1d6;
+@define-color comment    #565f89;
+
+@define-color blue       #7aa2f7;
+@define-color cyan       #7dcfff;
+@define-color green      #9ece6a;
+@define-color orange     #ff9e64;
+@define-color purple     #bb9af7;
+@define-color red        #f7768e;
+@define-color yellow     #e0af68;
+
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: alpha(@bg-dark, 0.90);
+    color: @fg;
+    border-radius: 12px;
+}
+
+tooltip {
+    background: @surface;
+    color: @fg;
+    border: 1px solid @selection;
+    border-radius: 10px;
+}
+
+tooltip label {
+    color: @fg;
+}
+
+#workspaces,
+#window,
+#clock,
+#battery,
+#network,
+#bluetooth,
+#pulseaudio,
+#wireplumber,
+#cpu,
+#memory,
+#temperature,
+#tray,
+#custom-appmenu,
+#custom-exit,
+#custom-updates,
+#custom-notification {
+    background: alpha(@surface, 0.92);
+    color: @fg;
+    margin: 5px 3px;
+    padding: 0 11px;
+    border-radius: 10px;
+}
+
+#workspaces {
+    padding: 0 5px;
+}
+
+#workspaces button {
+    color: @comment;
+    padding: 0 7px;
+    border-radius: 8px;
+}
+
+#workspaces button:hover {
+    background: @selection;
+    color: @fg;
+}
+
+#workspaces button.active {
+    background: @blue;
+    color: @bg-dark;
+}
+
+#workspaces button.urgent {
+    background: @red;
+    color: @bg-dark;
+}
+
+#window {
+    color: @cyan;
+}
+
+#clock {
+    color: @purple;
+    font-weight: bold;
+}
+
+#battery {
+    color: @green;
+}
+
+#battery.warning {
+    color: @yellow;
+}
+
+#battery.critical {
+    color: @red;
+}
+
+#battery.charging,
+#battery.plugged {
+    color: @cyan;
+}
+
+#network {
+    color: @blue;
+}
+
+#bluetooth {
+    color: @cyan;
+}
+
+#pulseaudio,
+#wireplumber {
+    color: @purple;
+}
+
+#cpu {
+    color: @green;
+}
+
+#memory {
+    color: @orange;
+}
+
+#temperature {
+    color: @yellow;
+}
+
+#temperature.critical {
+    color: @red;
+}
+
+#tray {
+    padding-right: 10px;
+}
+
+#custom-appmenu {
+    color: @blue;
+    font-size: 15px;
+}
+
+#custom-exit {
+    color: @red;
+}
+
+#custom-updates {
+    color: @yellow;
+}
+
+#custom-notification {
+    color: @purple;
+}
