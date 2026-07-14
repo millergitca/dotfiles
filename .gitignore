@@ -1,0 +1,26 @@
+# Secrets and credentials
+**/.env
+**/.env.*
+**/*token*
+**/*secret*
+**/*credentials*
+**/id_rsa*
+**/id_ed25519*
+**/*.pem
+**/*.key
+
+# Runtime and generated state
+.cache/
+.local/share/
+.local/state/
+node_modules/
+target/
+__pycache__/
+*.log
+*.swp
+*.shada
+lazy-lock.json.backup
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db

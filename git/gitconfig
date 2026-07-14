@@ -1,0 +1,39 @@
+[init]
+    defaultBranch = main
+
+[core]
+    editor = nvim
+    autocrlf = input
+    safecrlf = warn
+
+[pull]
+    rebase = false
+
+[fetch]
+    prune = true
+    pruneTags = true
+
+[push]
+    default = simple
+    autoSetupRemote = true
+
+[rebase]
+    autoStash = true
+
+[rerere]
+    enabled = true
+
+[diff]
+    algorithm = histogram
+    colorMoved = zebra
+
+[merge]
+    conflictStyle = zdiff3
+
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    cm = commit
+    last = log -1 HEAD
+    graph = log --graph --decorate --oneline --all

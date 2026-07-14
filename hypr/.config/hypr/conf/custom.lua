@@ -1,0 +1,2 @@
+-- Personal ML4W/Hyprland overrides.
+-- We will add keyboard backlight, gestures and keybindings here.
