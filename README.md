@@ -2,6 +2,15 @@
 
 Personal Arch Linux, ML4W Hyprland, Ghostty, Zsh, Neovim, and VS Code configuration.
 
+## Quick Start
+
+```bash
+git clone https://github.com/millergitca/dotfiles.git
+cd dotfiles
+make check
+./bootstrap.sh
+```
+
 ## Included
 
 - Ghostty with Tokyo Night Storm
