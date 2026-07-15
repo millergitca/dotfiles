@@ -22,6 +22,9 @@ source "$DOTFILES_DIR/lib/system.sh"
 # shellcheck source=lib/packages.sh
 source "$DOTFILES_DIR/lib/packages.sh"
 
+# shellcheck source=lib/shell.sh
+source "$DOTFILES_DIR/lib/shell.sh"
+
 # ------------------------------------------------------------
 # Preflight
 # ------------------------------------------------------------
@@ -42,25 +45,6 @@ preflight() {
     fail "install.sh was not found in $DOTFILES_DIR."
 
   success "Preflight checks passed"
-}
-
-# ------------------------------------------------------------
-# Shell setup
-# ------------------------------------------------------------
-
-configure_shell() {
-  info "Configuring Zsh"
-
-  local zsh_path
-  zsh_path="$(command -v zsh)"
-
-  if [[ "$SHELL" != "$zsh_path" ]]; then
-    chsh -s "$zsh_path"
-    warn "Your login shell was changed to Zsh."
-    warn "Log out and back in after bootstrap completes."
-  else
-    success "Zsh is already the login shell"
-  fi
 }
 
 # ------------------------------------------------------------
