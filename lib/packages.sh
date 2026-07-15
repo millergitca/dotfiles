@@ -12,6 +12,7 @@ install_packages() {
   local packages=(
     base-devel
     git
+    less
     github-cli
     openssh
     curl
@@ -27,7 +28,7 @@ install_packages() {
     zsh-completions
     zsh-autosuggestions
     zsh-syntax-highlighting
-    powerlevel10k
+    zsh-theme-powerlevel10k
     ttf-jetbrains-mono-nerd
 
     neovim
@@ -70,9 +71,22 @@ install_packages() {
     zathura-pdf-mupdf
   )
 
+  local aur_packages=(
+	zsh-theme-powerlevel10k
+  )
+
   info "Installing core packages"
 
   sudo pacman -S --needed "${packages[@]}"
 
   success "Core packages installed"
+
+  if command -v yay >/dev/null 2>&1; then
+	info "Installing AUR packages"
+	yay -S --needed --noconfirm "${aur_packages[@]}"
+	success "AUR packages installed"
+  else
+	fail "yay is required to install AUR packages."
+  fi
+
 }
