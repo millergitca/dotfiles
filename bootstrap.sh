@@ -31,6 +31,15 @@ source "$DOTFILES_DIR/lib/docker.sh"
 # shellcheck source=lib/directories.sh
 source "$DOTFILES_DIR/lib/directories.sh"
 
+# shellcheck source=lib/git.sh
+source "$DOTFILES_DIR/lib/git.sh"
+
+# shellcheck source=lib/dotfiles.sh
+source "$DOTFILES_DIR/lib/dotfiles.sh"
+
+# shellcheck source=lib/verify.sh
+source "$DOTFILES_DIR/lib/verify.sh"
+
 # ------------------------------------------------------------
 # Preflight
 # ------------------------------------------------------------
@@ -51,90 +60,6 @@ preflight() {
     fail "install.sh was not found in $DOTFILES_DIR."
 
   success "Preflight checks passed"
-}
-
-# ------------------------------------------------------------
-# Dotfiles installation
-# ------------------------------------------------------------
-
-install_dotfiles() {
-  info "Installing tracked dotfiles"
-
-  chmod +x "$DOTFILES_DIR/install.sh"
-  "$DOTFILES_DIR/install.sh"
-
-  success "Dotfiles installed"
-}
-
-# ------------------------------------------------------------
-# Git defaults
-# ------------------------------------------------------------
-
-configure_git() {
-  info "Applying non-personal Git defaults"
-
-  git config --global init.defaultBranch main
-  git config --global core.editor nvim
-  git config --global core.autocrlf input
-  git config --global fetch.prune true
-  git config --global push.autoSetupRemote true
-  git config --global rerere.enabled true
-
-  if ! git config --global user.name >/dev/null; then
-    warn "Git user.name is not configured."
-    warn 'Set it later with: git config --global user.name "Your Name"'
-  fi
-
-  if ! git config --global user.email >/dev/null; then
-    warn "Git user.email is not configured."
-    warn 'Set it later with: git config --global user.email "you@example.com"'
-  fi
-
-  success "Git defaults configured"
-}
-
-# ------------------------------------------------------------
-# Verification
-# ------------------------------------------------------------
-
-verify_setup() {
-  info "Verifying installed tools"
-
-  local tools=(
-    git
-    gh
-    ghostty
-    zsh
-    nvim
-    tmux
-    python
-    node
-    npm
-    java
-    go
-    rustc
-    cargo
-    docker
-    brightnessctl
-  )
-
-  local missing=0
-
-  for tool in "${tools[@]}"; do
-    if command_exists "$tool"; then
-      printf '  %-18s %s\n' "$tool" "OK"
-    else
-      printf '  %-18s %s\n' "$tool" "MISSING"
-      missing=1
-    fi
-  done
-
-  if ((missing)); then
-    warn "Some expected tools are missing. Review the log:"
-    warn "$BOOTSTRAP_LOG_FILE"
-  else
-    success "All expected tools were found"
-  fi
 }
 
 # ------------------------------------------------------------
