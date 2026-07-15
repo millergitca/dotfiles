@@ -60,6 +60,12 @@ if [[ -f "$DOTFILES/hypr/.config/hypr/custom.lua" ]]; then
     "$HOME/.config/hypr/custom.lua"
 fi
 
+if [[ -d "$DOTFILES/waybar/.config/waybar/themes/tokyo-night-storm" ]]; then
+  link_file \
+    "$DOTFILES/waybar/.config/waybar/themes/tokyo-night-storm" \
+    "$HOME/.config/waybar/themes/tokyo-night-storm"
+fi
+
 if ! grep -Fq '.config/zsh/developer-tools.zsh' "$HOME/.zshrc"; then
   cp -a "$HOME/.zshrc" "$BACKUP/zshrc" 2>/dev/null || true
 
