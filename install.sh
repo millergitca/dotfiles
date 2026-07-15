@@ -63,6 +63,7 @@ fi
 if ! grep -Fq '.config/zsh/developer-tools.zsh' "$HOME/.zshrc"; then
   cp -a "$HOME/.zshrc" "$BACKUP/zshrc" 2>/dev/null || true
 
+  # shellcheck disable=SC2016
   printf '\n%s\n' \
     '[[ -r "$HOME/.config/zsh/developer-tools.zsh" ]] && source "$HOME/.config/zsh/developer-tools.zsh"' \
     >> "$HOME/.zshrc"

@@ -2,7 +2,8 @@
 
 set -Eeuo pipefail
 
-export DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export DOTFILES_DIR
 
 # shellcheck source=lib/constants.sh
 source "$DOTFILES_DIR/lib/constants.sh"

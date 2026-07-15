@@ -13,4 +13,5 @@ export DOTFILES_LOG_DIR="$DOTFILES_STATE_DIR/logs"
 
 mkdir -p "$DOTFILES_LOG_DIR"
 
-export BOOTSTRAP_LOG_FILE="$DOTFILES_LOG_DIR/bootstrap-$(date +%Y%m%d-%H%M%S).log"
+BOOTSTRAP_LOG_FILE="$DOTFILES_LOG_DIR/bootstrap-$(date +%Y%m%d-%H%M%S).log"
+export BOOTSTRAP_LOG_FILE
