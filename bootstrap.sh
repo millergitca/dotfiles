@@ -10,25 +10,11 @@ mkdir -p "$LOG_DIR"
 exec > >(tee -a "$LOG_FILE") 2>&1
 
 # ------------------------------------------------------------
-# Output helpers
+# Shared libraries
 # ------------------------------------------------------------
 
-info() {
-  printf '\n\033[1;34m[INFO]\033[0m %s\n' "$*"
-}
-
-success() {
-  printf '\033[1;32m[SUCCESS]\033[0m %s\n' "$*"
-}
-
-warn() {
-  printf '\033[1;33m[WARN]\033[0m %s\n' "$*"
-}
-
-fail() {
-  printf '\033[1;31m[ERROR]\033[0m %s\n' "$*" >&2
-  exit 1
-}
+# shellcheck source=lib/logging.sh
+source "$DOTFILES_DIR/lib/logging.sh"
 
 command_exists() {
   command -v "$1" >/dev/null 2>&1
