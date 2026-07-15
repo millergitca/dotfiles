@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := help
+
 .PHONY: help check bootstrap install tag release clean
 
 help:
