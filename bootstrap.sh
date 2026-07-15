@@ -2,12 +2,12 @@
 
 set -Eeuo pipefail
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOG_DIR="$HOME/.local/state/dotfiles-bootstrap"
-LOG_FILE="$LOG_DIR/bootstrap-$(date +%Y%m%d-%H%M%S).log"
+export DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-mkdir -p "$LOG_DIR"
-exec > >(tee -a "$LOG_FILE") 2>&1
+# shellcheck source=lib/constants.sh
+source "$DOTFILES_DIR/lib/constants.sh"
+
+exec > >(tee -a "$BOOTSTRAP_LOG_FILE") 2>&1
 
 # ------------------------------------------------------------
 # Shared libraries
@@ -254,7 +254,7 @@ verify_setup() {
 
   if ((missing)); then
     warn "Some expected tools are missing. Review the log:"
-    warn "$LOG_FILE"
+    warn "$BOOTSTRAP_LOG_FILE"
   else
     success "All expected tools were found"
   fi
@@ -283,7 +283,7 @@ main() {
   printf '====================================================\n'
   printf ' Bootstrap complete\n'
   printf '====================================================\n'
-  printf '\nLog file:\n  %s\n' "$LOG_FILE"
+  printf '\nLog file:\n  %s\n' "$BOOTSTRAP_LOG_FILE"
   printf '\nRecommended final step:\n  Log out and back in once.\n'
 }
 
