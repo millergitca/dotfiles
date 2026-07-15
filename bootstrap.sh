@@ -25,6 +25,12 @@ source "$DOTFILES_DIR/lib/packages.sh"
 # shellcheck source=lib/shell.sh
 source "$DOTFILES_DIR/lib/shell.sh"
 
+# shellcheck source=lib/docker.sh
+source "$DOTFILES_DIR/lib/docker.sh"
+
+# shellcheck source=lib/directories.sh
+source "$DOTFILES_DIR/lib/directories.sh"
+
 # ------------------------------------------------------------
 # Preflight
 # ------------------------------------------------------------
@@ -45,45 +51,6 @@ preflight() {
     fail "install.sh was not found in $DOTFILES_DIR."
 
   success "Preflight checks passed"
-}
-
-# ------------------------------------------------------------
-# Docker setup
-# ------------------------------------------------------------
-
-configure_docker() {
-  info "Configuring Docker"
-
-  sudo systemctl enable --now docker.service
-
-  if ! id -nG "$USER" | tr ' ' '\n' | grep -qx docker; then
-    sudo usermod -aG docker "$USER"
-    warn "You were added to the docker group."
-    warn "Log out and back in before using Docker without sudo."
-  else
-    success "User is already in the docker group"
-  fi
-}
-
-# ------------------------------------------------------------
-# Development directories
-# ------------------------------------------------------------
-
-create_directories() {
-  info "Creating development directories"
-
-  mkdir -p \
-    "$HOME/Projects/Personal" \
-    "$HOME/Projects/University" \
-    "$HOME/Projects/OpenSource" \
-    "$HOME/Projects/Experiments" \
-    "$HOME/University/Notes" \
-    "$HOME/University/Assignments" \
-    "$HOME/University/Resources" \
-    "$HOME/University/Templates" \
-    "$HOME/Scripts"
-
-  success "Development directories created"
 }
 
 # ------------------------------------------------------------
