@@ -25,12 +25,7 @@ tag:
 	git tag -a "v$(VERSION)" -m "v$(VERSION)"
 
 release:
-	@test -n "$(VERSION)" || (echo "Usage: make release VERSION=x.y.z" && exit 1)
-	@git rev-parse "v$(VERSION)" >/dev/null 2>&1 || \
-		(echo "Tag v$(VERSION) does not exist. Run make tag VERSION=$(VERSION) first." && exit 1)
-	git push
-	git push origin "v$(VERSION)"
-	gh release create "v$(VERSION)" --generate-notes
+	./scripts/release.sh "$(VERSION)" "$(TITLE)"
 
 clean:
 	@echo "Nothing to clean."
