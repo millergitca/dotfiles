@@ -32,7 +32,7 @@
         "battery",
         "group/hardware",
         "tray",
-        "clock",
+        "custom/clock",
         "custom/exit"
     ]
 }
