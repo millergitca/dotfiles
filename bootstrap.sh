@@ -16,9 +16,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 # shellcheck source=lib/logging.sh
 source "$DOTFILES_DIR/lib/logging.sh"
 
-command_exists() {
-  command -v "$1" >/dev/null 2>&1
-}
+# shellcheck source=lib/system.sh
+source "$DOTFILES_DIR/lib/system.sh"
 
 # ------------------------------------------------------------
 # Preflight
@@ -27,17 +26,14 @@ command_exists() {
 preflight() {
   info "Running preflight checks"
 
-  [[ -f /etc/arch-release ]] ||
+  is_arch_linux ||
     fail "This bootstrap currently supports Arch Linux only."
 
-  [[ "$EUID" -ne 0 ]] ||
+  ! is_root ||
     fail "Run this script as your normal user, not with sudo."
 
-  command_exists sudo ||
-    fail "sudo is required."
-
-  command_exists pacman ||
-    fail "pacman is required."
+  require_command sudo
+  require_command pacman
 
   [[ -f "$DOTFILES_DIR/install.sh" ]] ||
     fail "install.sh was not found in $DOTFILES_DIR."
