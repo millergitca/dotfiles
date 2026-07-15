@@ -75,6 +75,7 @@ main() {
 
   preflight
   install_packages
+  configure_networking
   configure_shell
   configure_docker
   create_directories

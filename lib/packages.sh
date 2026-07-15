@@ -22,6 +22,8 @@ install_packages() {
     unzip
     tree
     jq
+    iwd
+    networkmanager
 
     ghostty
     zsh
