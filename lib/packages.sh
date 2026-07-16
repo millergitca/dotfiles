@@ -65,6 +65,10 @@ install_packages() {
 
     brightnessctl
     playerctl
+    pipewire
+    pipewire-pulse
+    wireplumber
+    rtkit
     pavucontrol
     network-manager-applet
     blueman

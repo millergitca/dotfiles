@@ -29,6 +29,9 @@ source "$DOTFILES_DIR/lib/shell.sh"
 # shellcheck source=lib/docker.sh
 source "$DOTFILES_DIR/lib/docker.sh"
 
+# shellcheck source=lib/audio.sh
+source "$DOTFILES_DIR/lib/audio.sh"
+
 # shellcheck source=lib/directories.sh
 source "$DOTFILES_DIR/lib/directories.sh"
 
@@ -86,6 +89,7 @@ main() {
   configure_t2
   configure_shell
   configure_docker
+  configure_audio
   create_directories
   configure_git
   install_dotfiles
