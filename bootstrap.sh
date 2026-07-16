@@ -38,6 +38,9 @@ source "$DOTFILES_DIR/lib/git.sh"
 # shellcheck source=lib/dotfiles.sh
 source "$DOTFILES_DIR/lib/dotfiles.sh"
 
+# shellcheck source=lib/ml4w.sh
+source "$DOTFILES_DIR/lib/ml4w.sh"
+
 # shellcheck source=lib/verify.sh
 source "$DOTFILES_DIR/lib/verify.sh"
 
@@ -76,6 +79,7 @@ main() {
   preflight
   install_packages
   configure_networking
+  configure_ml4w
   configure_shell
   configure_docker
   create_directories
