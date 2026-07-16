@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+case "$1/$2" in
+  pre/*)
+    systemctl stop tiny-dfr.service 2>/dev/null || true
+
+    modprobe -r appletbdrm 2>/dev/null || true
+    modprobe -r hid_appletb_kbd 2>/dev/null || true
+    ;;
+
+  post/*)
+    # Allow Apple BCE USB devices to re-enumerate.
+    sleep 4
+
+    modprobe hid_appletb_kbd 2>/dev/null || true
+    modprobe appletbdrm 2>/dev/null || true
+
+    # Wait for the Touch Bar DRM card to appear.
+    for _ in {1..20}; do
+      if find /sys/class/drm/card*/device/driver \
+        -type l \
+        -exec readlink -f {} \; 2>/dev/null |
+        grep -q '/appletbdrm$'; then
+        break
+      fi
+
+      sleep 0.5
+    done
+
+    systemctl restart tiny-dfr.service 2>/dev/null || true
+
+    # Wait for the backlight devices to return.
+    for _ in {1..20}; do
+      if [[ -e /sys/class/backlight/appletb_backlight/brightness &&
+            -e /sys/class/leds/:white:kbd_backlight/brightness ]]; then
+        break
+      fi
+
+      sleep 0.5
+    done
+
+    brightnessctl -q -d appletb_backlight set 100% || true
+    brightnessctl -q -d ':white:kbd_backlight' set 35% || true
+    ;;
+esac

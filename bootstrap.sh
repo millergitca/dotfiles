@@ -41,6 +41,9 @@ source "$DOTFILES_DIR/lib/dotfiles.sh"
 # shellcheck source=lib/ml4w.sh
 source "$DOTFILES_DIR/lib/ml4w.sh"
 
+# shellcheck source=lib/t2.sh
+source "$DOTFILES_DIR/lib/t2.sh"
+
 # shellcheck source=lib/verify.sh
 source "$DOTFILES_DIR/lib/verify.sh"
 
@@ -80,6 +83,7 @@ main() {
   install_packages
   configure_networking
   configure_ml4w
+  configure_t2
   configure_shell
   configure_docker
   create_directories
