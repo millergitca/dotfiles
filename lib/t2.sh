@@ -44,5 +44,14 @@ configure_t2() {
       set "$T2_DEFAULT_KEYBOARD_BRIGHTNESS" || true
   fi
 
+  if systemctl list-unit-files t2fanrd.service \
+    --no-legend 2>/dev/null |
+    grep -q '^t2fanrd\.service'; then
+    sudo systemctl enable --now t2fanrd.service
+    success "T2 fan control enabled"
+  else
+    warn "t2fanrd.service was not found"
+  fi
+
   success "Apple T2 modules and resume handling configured"
 }

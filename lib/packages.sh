@@ -44,7 +44,7 @@ install_packages() {
     btop
     fastfetch
     wl-clipboard
-
+    t2fanrd
     python
     python-pip
     python-virtualenv

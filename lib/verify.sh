@@ -206,6 +206,7 @@ verify_setup() {
     fi
 
     verify_system_service tiny-dfr.service || failures=1
+    verify_system_service t2fanrd.service || failures=1
 
     if [[ -e /sys/class/backlight/appletb_backlight/brightness ]]; then
       printf '  %-34s %s\n' "Touch Bar backlight device" "OK"
