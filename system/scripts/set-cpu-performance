@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+shopt -s nullglob
+
+preference_files=(
+  /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference
+)
+
+if ((${#preference_files[@]} == 0)); then
+  exit 0
+fi
+
+for preference_file in "${preference_files[@]}"; do
+  available_file="$(dirname "$preference_file")/energy_performance_available_preferences"
+
+  if [[ -r "$available_file" ]] &&
+     ! grep -qw performance "$available_file"; then
+    continue
+  fi
+
+  printf 'performance\n' > "$preference_file"
+done

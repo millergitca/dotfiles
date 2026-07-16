@@ -1,0 +1,11 @@
+[Unit]
+Description=Set CPU energy preference to performance
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/libexec/miller-set-cpu-performance
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

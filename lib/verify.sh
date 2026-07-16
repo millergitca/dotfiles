@@ -2,8 +2,8 @@
 
 # Post-bootstrap runtime verification.
 #
-# This file expects constants, logging, system, and T2 libraries
-# to be sourced first.
+# This file expects constants, logging, system, ML4W, performance,
+# and T2 libraries to be sourced first.
 
 verify_command() {
   local command_name="$1"
@@ -88,6 +88,7 @@ verify_setup() {
 
   local failures=0
   local tool
+  local cpu_preference_file
 
   local tools=(
     git
@@ -124,13 +125,14 @@ verify_setup() {
   printf '\nSystem services\n'
 
   verify_system_service docker.service || failures=1
+  verify_system_service cpu-performance.service || failures=1
 
   printf '\nUser and group state\n'
 
   if id -nG "$USER" | tr ' ' '\n' | grep -qx docker; then
-    printf '  %-34s %s\n' "docker group membership" "OK"
+    printf '  %-34s %s\n' "Docker group membership" "OK"
   else
-    printf '  %-34s %s\n' "docker group membership" "MISSING"
+    printf '  %-34s %s\n' "Docker group membership" "MISSING"
     failures=1
   fi
 
@@ -195,6 +197,18 @@ verify_setup() {
     failures=1
   fi
 
+  printf '\nPerformance\n'
+
+  cpu_preference_file="/sys/devices/system/cpu/cpu0/cpufreq/energy_performance_preference"
+
+  if [[ -r "$cpu_preference_file" ]] &&
+     [[ "$(<"$cpu_preference_file")" == "performance" ]]; then
+    printf '  %-34s %s\n' "CPU energy preference" "PERFORMANCE"
+  else
+    printf '  %-34s %s\n' "CPU energy preference" "UNEXPECTED"
+    failures=1
+  fi
+
   if is_t2_macbook; then
     printf '\nApple T2 hardware\n'
 
@@ -216,9 +230,9 @@ verify_setup() {
     fi
 
     if [[ -e /sys/class/leds/:white:kbd_backlight/brightness ]]; then
-      printf '  %-34s %s\n' "keyboard backlight device" "OK"
+      printf '  %-34s %s\n' "Keyboard backlight device" "OK"
     else
-      printf '  %-34s %s\n' "keyboard backlight device" "MISSING"
+      printf '  %-34s %s\n' "Keyboard backlight device" "MISSING"
       failures=1
     fi
 
