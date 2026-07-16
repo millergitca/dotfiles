@@ -37,3 +37,13 @@ export VISUAL='nvim'
 export PAGER='less'
 export MANPAGER='nvim +Man!'
 export BAT_THEME='TwoDark'
+
+# -------------------------------------------------
+# Powerlevel10k
+# -------------------------------------------------
+
+if [[ -r /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]]; then
+  source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+fi
+
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh

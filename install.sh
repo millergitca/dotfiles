@@ -36,6 +36,12 @@ if [[ -f "$DOTFILES/zsh/.config/zsh/developer-tools.zsh" ]]; then
     "$HOME/.config/zsh/developer-tools.zsh"
 fi
 
+if [[ -f "$DOTFILES/zsh/.p10k.zsh" ]]; then
+    link_file \
+        "$DOTFILES/zsh/.p10k.zsh" \
+        "$HOME/.p10k.zsh"
+fi
+
 if [[ -d "$DOTFILES/nvim/.config/nvim" ]]; then
   link_file \
     "$DOTFILES/nvim/.config/nvim" \
