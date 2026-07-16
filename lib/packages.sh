@@ -30,7 +30,6 @@ install_packages() {
     zsh-completions
     zsh-autosuggestions
     zsh-syntax-highlighting
-    zsh-theme-powerlevel10k
     ttf-jetbrains-mono-nerd
 
     neovim
@@ -87,8 +86,8 @@ install_packages() {
 	info "Installing AUR packages"
 	yay -S --needed --noconfirm "${aur_packages[@]}"
 	success "AUR packages installed"
-  else
-	fail "yay is required to install AUR packages."
+  elif ((${aur_packages[@]})); then
+	warn "Skipping AUR packages because yay is not installed."
   fi
 
 }
