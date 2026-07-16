@@ -21,6 +21,7 @@ install_packages() {
     zip
     unzip
     tree
+    tree-sitter-cli
     jq
     iwd
     networkmanager
