@@ -10,6 +10,7 @@ ML4W_DEFAULT_BLUR="80x80"
 ML4W_DEFAULT_ROFI_FONT="JetBrainsMono Nerd Font 13"
 ML4W_DEFAULT_WAYBAR_QUICKLINKS="True"
 ML4W_DEFAULT_WAYBAR_TASKBAR="True"
+ML4W_DEFAULT_ANIMATION_PROFILE="animations-smooth.lua"
 
 configure_ml4w() {
   info "Configuring ML4W preferences"
@@ -21,6 +22,7 @@ configure_ml4w() {
   local rofi_font_file="$ml4w_settings_dir/rofi-font.rasi"
   local waybar_quicklinks_file="$ml4w_settings_dir/waybar_quicklinks.sh"
   local waybar_taskbar_file="$ml4w_settings_dir/waybar_taskbar.sh"
+  local hypr_animation_file="$HOME/.config/hypr/conf/animation.lua"
 
   if [[ ! -d "$ml4w_settings_dir" ]]; then
     warn "ML4W settings directory not found; skipping ML4W configuration"
@@ -41,10 +43,17 @@ configure_ml4w() {
   printf '%s\n' "$ML4W_DEFAULT_WAYBAR_TASKBAR" \
     > "$waybar_taskbar_file"
 
+  if [[ -d "$HOME/.config/hypr/conf/animations" ]]; then
+  printf 'local name = "%s"\nload_variant(name,"animations")\n' \
+    "$ML4W_DEFAULT_ANIMATION_PROFILE" \
+    > "$hypr_animation_file"
+  fi
+
   success "ML4W default terminal set to $ML4W_DEFAULT_TERMINAL"
   success "ML4W Waybar theme set to Tokyo Night Storm"
   success "ML4W blur setting set to $ML4W_DEFAULT_BLUR"
   success "ML4W Rofi font set to $ML4W_DEFAULT_ROFI_FONT"
   success "ML4W Waybar quick links enabled"
   success "ML4W Waybar taskbar enabled"
+  success "ML4W animation profile set to $ML4W_DEFAULT_ANIMATION_PROFILE"
 }
