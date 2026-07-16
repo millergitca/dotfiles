@@ -6,9 +6,10 @@
 > that can be recreated on supported hardware from a clean installation using a
 > single bootstrap command.
 >
-> Every release should reduce manual configuration, improve reliability, and
-> move the project closer to a fully automated workstation that looks,
-> behaves, and performs identically across all supported machines.
+> Every release should reduce manual configuration, improve reliability,
+> improve portability, and move the project closer to a fully automated
+> workstation that looks, behaves, and performs identically across all
+> supported machines.
 
 ---
 
@@ -16,11 +17,14 @@
 
 🎯 **v1.2.0 — Complete Workstation Recreation**
 
-The current objective is to make a fresh Arch Linux + ML4W installation
-indistinguishable from my daily development environment after running
-`bootstrap.sh`.
+The current objective is to eliminate the remaining manual configuration
+required after a fresh Arch Linux + ML4W installation.
 
-The MacBook Pro 13" serves as the integration test machine.
+The bootstrap should configure the workstation to production quality with
+minimal user interaction while validating that every subsystem functions
+correctly.
+
+The MacBook Pro 13" serves as the integration and validation machine.
 
 The MacBook Pro 16" serves as the production workstation.
 
@@ -41,6 +45,11 @@ Implement Feature
         │
         ▼
 
+Static Validation
+
+        │
+        ▼
+
 Bootstrap Test
 
         │
@@ -56,12 +65,17 @@ Commit & Push
         │
         ▼
 
+GitHub Actions Validation
+
+        │
+        ▼
+
 Update Documentation
 
         │
         ▼
 
-GitHub Release
+Git Tag & Release
 
         │
         ▼
@@ -69,8 +83,14 @@ GitHub Release
 Deploy to Production (16")
 ```
 
-Nothing is considered complete until it has been successfully tested on the
-integration machine.
+Nothing is considered complete until it has:
+
+- Passed local validation
+- Passed GitHub Actions
+- Passed runtime verification
+- Been tested on the integration machine
+- Been deployed successfully to the production workstation
+- Been tagged and released on GitHub
 
 ---
 
@@ -89,14 +109,18 @@ Every improvement should be:
 - Hardware Aware
 - Well Documented
 - Fully Tested
+- Safe to Re-run
+- Production Ready
 
 Whenever possible:
 
-- automate instead of documenting manual steps
-- fix root causes instead of symptoms
-- keep hardware-specific logic isolated
-- keep configuration modular
-- validate changes before releasing
+- Automate instead of documenting manual steps
+- Fix root causes instead of symptoms
+- Isolate hardware-specific logic
+- Keep configuration modular
+- Verify changes automatically
+- Prefer reusable components over one-off fixes
+- Maintain idempotent bootstrap behavior
 
 ---
 
@@ -105,12 +129,21 @@ Whenever possible:
 ## Production
 
 - MacBook Pro 16,1 (2019)
+- Intel Core i9
 - Apple T2
+- Arch Linux
+- Hyprland (ML4W)
 - Daily Driver
+
+---
 
 ## Integration
 
-- MacBook Pro 13" (Apple T2)
+- MacBook Pro 13,2 (2020)
+- Intel Core i7
+- Apple T2
+- Arch Linux
+- Hyprland (ML4W)
 - Bootstrap Validation
 - Clean Install Testing
 - Release Verification
@@ -136,33 +169,46 @@ Whenever possible:
 - Git
 - GitHub CLI
 
+## Runtime
+
+- PipeWire
+- WirePlumber
+- NetworkManager (iwd)
+- Docker
+- brightnessctl
+- tiny-dfr
+- t2fanrd
+
 ---
 
 # Release History
 
 ## ✅ v1.0.0
 
-Clean Workstation Base
+### Clean Workstation Base
 
-Completed
+Released
 
 - Initial workstation bootstrap
 - Base package installation
-- Dotfile management
 - Core development environment
+- Dotfile management
+- Initial repository structure
 
 ---
 
 ## ✅ v1.1.0
 
-Architecture Refactor
+### Bootstrap Architecture
 
-Completed
+Released
 
 - Modular bootstrap architecture
 - Shared libraries
+- Runtime logging
 - Repository cleanup
-- Testing framework
+- Static validation framework
+- ShellCheck integration
 - Documentation improvements
 
 ---
@@ -171,62 +217,66 @@ Completed
 
 ## Complete Workstation Recreation
 
-### Bootstrap
-
-- [x] Bootstrap validated on second machine
-- [x] Tree-sitter CLI automation
-- [x] ShellCheck integration
-- [x] Powerlevel10k automation
-- [x] Ghostty automation
-- [x] ML4W module
-- [x] ML4W terminal automation
-- [x] ML4W Waybar automation
-
-### ML4W
-
-- [ ] Restore complete ML4W Settings
-- [ ] Fonts
-- [ ] Blur
-- [ ] Decorations
-- [ ] Wallpaper
-- [ ] GTK Theme
-- [ ] QT Theme
-- [ ] Cursor Theme
-- [ ] Lock Screen
-- [ ] Notifications
-- [ ] Default Applications
-
 ### Desktop
 
-- [ ] Desktop parity (13" ↔ 16")
-- [ ] Waybar parity
-- [ ] Ghostty launcher integration
-- [ ] Wallpaper automation
-- [ ] Appearance verification
+- [x] Ghostty automation
+- [x] Waybar theme automation
+- [x] ML4W terminal automation
+- [x] ML4W blur automation
+- [x] ML4W animation profile automation
+- [x] GTK theme parity
+- [x] QT theme parity
+- [x] Cursor theme parity
+- [x] Default applications parity
+- [x] Desktop parity
+- [ ] Final appearance verification
 
-### Hardware
+---
 
-- [ ] Keyboard backlight
-- [ ] Touch Bar polish
-- [ ] Wi-Fi improvements
-- [ ] Suspend / Resume validation
-- [ ] Brightness controls
+### Apple T2
 
-### Input
+- [x] tiny-dfr automation
+- [x] Resume hook
+- [x] Touch Bar restoration
+- [x] Touch Bar brightness bindings
+- [x] Keyboard backlight restoration
+- [x] Keyboard brightness bindings
+- [x] CPU performance tuning
+- [x] T2 fan tuning
+- [ ] Extended suspend / resume stress testing
 
-- [ ] Trackpad configuration
-- [ ] Copy / Paste
-- [ ] Tap-to-click
-- [ ] Right-click
-- [ ] Three-finger gestures
-- [ ] Natural scrolling
+---
+
+### Audio
+
+- [x] PipeWire automation
+- [x] PipeWire Pulse compatibility
+- [x] WirePlumber automation
+- [x] Runtime verification
+
+---
+
+### Bootstrap
+
+- [x] Runtime verification
+- [x] ShellCheck integration
+- [x] GitHub Actions CI
+- [x] Tree-sitter CLI automation
+- [x] Docker automation
+- [x] ML4W module
+- [x] Apple T2 module
+- [ ] Hardware detection
+- [ ] Installation profiles
+
+---
 
 ### Validation
 
-- [ ] Fresh bootstrap on 13"
-- [ ] Fresh bootstrap on 16"
-- [ ] Zero manual configuration
-- [ ] Release candidate verification
+- [x] Bootstrap validated on 13"
+- [ ] Bootstrap validated on 16"
+- [ ] Zero manual intervention
+- [ ] Tag v1.2.0
+- [ ] Publish GitHub Release
 
 ---
 
@@ -234,37 +284,58 @@ Completed
 
 ## v1.3.0
 
-Developer Environment
+### Portable Bootstrap
 
-### Neovim
+**Goal**
 
-- [ ] LSP improvements
-- [ ] Debugging
-- [ ] Testing
-- [ ] Formatting
-- [ ] Performance tuning
+Make the bootstrap portable across supported hardware without modifying code.
 
-### VS Code
+### Features
 
-- [ ] Extensions
-- [ ] Settings Sync
-- [ ] Dev Containers
-- [ ] Theme automation
-
-### Terminal
-
-- [ ] Productivity aliases
-- [ ] Git helpers
-- [ ] Docker helpers
-- [ ] Utility scripts
+- [ ] Automatic hardware detection
+- [ ] Laptop profiles
+- [ ] Desktop profiles
+- [ ] Virtual Machine profile
+- [ ] Optional package groups
+- [ ] User configuration file
+- [ ] Release packaging
 
 ---
 
 ## v1.4.0
 
-Computer Science Toolkit
+### Developer Experience
 
-Languages
+#### Neovim
+
+- [ ] LSP improvements
+- [ ] Mason automation
+- [ ] Treesitter improvements
+- [ ] Debugging
+- [ ] Testing
+- [ ] Formatting
+
+#### VS Code
+
+- [ ] Extension automation
+- [ ] Profiles
+- [ ] Dev Containers
+
+#### Terminal
+
+- [ ] Lazygit
+- [ ] Lazydocker
+- [ ] tmux automation
+- [ ] Productivity aliases
+- [ ] Utility scripts
+
+---
+
+## v1.5.0
+
+### Computer Science Toolkit
+
+#### Languages
 
 - [ ] C
 - [ ] C++
@@ -273,7 +344,7 @@ Languages
 - [ ] Go
 - [ ] Rust
 
-Developer Tools
+#### Developer Tools
 
 - [ ] CMake
 - [ ] Make
@@ -284,39 +355,39 @@ Developer Tools
 
 ---
 
-## v1.5.0
+## v1.6.0
 
-Content Creation
+### Content Creation
 
-Streaming
+#### Streaming
 
-- [ ] OBS
+- [ ] OBS Studio
 - [ ] Scene Collection
 - [ ] Audio Routing
 - [ ] Camera Profiles
 
-Editing
+#### Editing
 
-- [ ] FFmpeg
-- [ ] Thumbnail Templates
-- [ ] Video Automation
+- [ ] FFmpeg automation
+- [ ] Thumbnail templates
+- [ ] Video workflow automation
 
-Publishing
+#### Publishing
 
-- [ ] Twitch Workflow
-- [ ] YouTube Workflow
+- [ ] Twitch workflow
+- [ ] YouTube workflow
 
 ---
 
 # Future
 
-- [ ] Multi-machine profiles
-- [ ] Automatic hardware detection
-- [ ] Apple T2 support module
-- [ ] CI validation
-- [ ] GitHub Actions
-- [ ] Secrets management
+- [ ] Multi-user configuration
+- [ ] Automatic hardware detection expansion
+- [ ] Secret management
 - [ ] Backup automation
+- [ ] Automatic release generation
+- [ ] Release artifacts
+- [ ] Documentation website
 - [ ] One-command workstation provisioning
 
 ---
@@ -336,8 +407,12 @@ cd dotfiles
 
 After logging out and back in, the workstation should:
 
-- match the configured desktop appearance
-- restore the complete development environment
-- configure supported hardware automatically
-- require no manual post-installation steps
-- be ready for software development immediately
+- Match the configured desktop appearance
+- Restore the complete development environment
+- Configure supported hardware automatically
+- Configure Apple T2 hardware when applicable
+- Require no manual post-installation
+- Pass `./tests/check.sh`
+- Pass runtime verification
+- Pass GitHub Actions validation
+- Be immediately ready for software development
