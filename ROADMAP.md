@@ -13,20 +13,32 @@
 
 ---
 
+# Current Status
+
+**Latest Release:** v1.2.0
+
+**Current Development:** v1.3.0
+
+**Production Machine:** MacBook Pro 16" (2019)
+
+**Integration Machine:** MacBook Pro 13" (2020)
+
+---
+
 # Current Focus
 
-🎯 **v1.2.0 — Complete Workstation Recreation**
+🎯 **v1.3.0 — Portable Bootstrap**
 
-The current objective is to eliminate the remaining manual configuration
-required after a fresh Arch Linux + ML4W installation.
+The next objective is to make the workstation portable across supported
+hardware with little to no machine-specific configuration.
 
-The bootstrap should configure the workstation to production quality with
-minimal user interaction while validating that every subsystem functions
-correctly.
+The bootstrap should automatically detect supported hardware, install only
+the required components, and support optional installation profiles.
 
-The MacBook Pro 13" serves as the integration and validation machine.
+The MacBook Pro 13" continues to serve as the integration and validation
+machine.
 
-The MacBook Pro 16" serves as the production workstation.
+The MacBook Pro 16" continues to serve as the production workstation.
 
 ---
 
@@ -213,80 +225,60 @@ Released
 
 ---
 
-# 🚧 v1.2.0
+## ✅ v1.2.0
 
-## Complete Workstation Recreation
+### Complete Workstation Recreation
 
-### Desktop
+Released
 
-- [x] Ghostty automation
-- [x] Waybar theme automation
-- [x] ML4W terminal automation
-- [x] ML4W blur automation
-- [x] ML4W animation profile automation
-- [x] GTK theme parity
-- [x] QT theme parity
-- [x] Cursor theme parity
-- [x] Default applications parity
-- [x] Desktop parity
-- [ ] Final appearance verification
+#### Desktop
 
----
+- Complete ML4W automation
+- Ghostty automation
+- Waybar theme automation
+- GTK/QT/Cursor theme parity
+- Desktop parity
 
-### Apple T2
+#### Apple T2
 
-- [x] tiny-dfr automation
-- [x] Resume hook
-- [x] Touch Bar restoration
-- [x] Touch Bar brightness bindings
-- [x] Keyboard backlight restoration
-- [x] Keyboard brightness bindings
-- [x] CPU performance tuning
-- [x] T2 fan tuning
-- [ ] Extended suspend / resume stress testing
+- tiny-dfr automation
+- Touch Bar restoration
+- Suspend / Resume recovery
+- Touch Bar brightness controls
+- Keyboard backlight restoration
+- Keyboard brightness controls
+- CPU performance tuning
+- T2 fan tuning
 
----
+#### Audio
 
-### Audio
+- PipeWire automation
+- PipeWire Pulse compatibility
+- WirePlumber automation
 
-- [x] PipeWire automation
-- [x] PipeWire Pulse compatibility
-- [x] WirePlumber automation
-- [x] Runtime verification
+#### Bootstrap
 
----
+- Runtime verification
+- ShellCheck integration
+- GitHub Actions CI
+- Tree-sitter CLI automation
+- Docker automation
+- Apple T2 module
+- ML4W module
 
-### Bootstrap
+#### Validation
 
-- [x] Runtime verification
-- [x] ShellCheck integration
-- [x] GitHub Actions CI
-- [x] Tree-sitter CLI automation
-- [x] Docker automation
-- [x] ML4W module
-- [x] Apple T2 module
-- [ ] Hardware detection
-- [ ] Installation profiles
+- Bootstrap validated on MacBook Pro 13"
+- Bootstrap validated on MacBook Pro 16"
+- Production deployment completed
 
 ---
 
-### Validation
+# 🚧 v1.3.0
 
-- [x] Bootstrap validated on 13"
-- [ ] Bootstrap validated on 16"
-- [ ] Zero manual intervention
-- [ ] Tag v1.2.0
-- [ ] Publish GitHub Release
+## Portable Bootstrap
 
----
-
-# Planned Releases
-
-## v1.3.0
-
-### Portable Bootstrap
-
-**Goal**
+### Goal
 
 Make the bootstrap portable across supported hardware without modifying code.
 
@@ -301,6 +293,8 @@ Make the bootstrap portable across supported hardware without modifying code.
 - [ ] Release packaging
 
 ---
+
+# Planned Releases
 
 ## v1.4.0
 
