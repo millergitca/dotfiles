@@ -21,7 +21,7 @@ configure_shell() {
   if [[ -f "$ml4w_customization" ]]; then
     info "Disabling conflicting ML4W Zsh customization"
     mkdir -p "$ml4w_disabled_dir"
-    mw "$ml4w_customization" "$ml4w_backup"
+    mv "$ml4w_customization" "$ml4w_backup"
     success "ML4W Zsh customization disabled"
   fi
 
