@@ -25,7 +25,7 @@ configure_performance() {
 
   sudo systemctl daemon-reload
   sudo systemctl enable --now cpu-performance.service
-
+ 
   success "CPU energy preference set to performance"
 
   if is_t2_macbook; then
