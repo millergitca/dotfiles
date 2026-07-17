@@ -87,12 +87,30 @@ install_packages() {
 
   success "Core packages installed"
 
+  # Remove legacy Powerlevel10k packages that conflict with the stable package.
+  local legacy_packages=()
+
+  for package in \
+    zsh-theme-powerlevel10k-git \
+    zsh-theme-powerlevel10k-git-debug
+  do
+    if pacman -Qq "$package" >/dev/null 2>&1; then
+      legacy_packages+=("$package")
+    fi
+  done
+
+  if ((${#legacy_packages[@]})); then
+    info "Removing legacy Powerlevel10k packages"
+
+    sudo pacman -Rns --noconfirm "${legacy_packages[@]}"
+  fi
+
   if command -v yay >/dev/null 2>&1; then
-	info "Installing AUR packages"
-	yay -S --needed --noconfirm "${aur_packages[@]}"
-	success "AUR packages installed"
-  elif ((${aur_packages[@]})); then
-	warn "Skipping AUR packages because yay is not installed."
+    info "Installing AUR packages"
+    yay -S --needed --noconfirm "${aur_packages[@]}"
+    success "AUR packages installed"
+  elif ((${#aur_packages[@]})); then
+    warn "Skipping AUR packages because yay is not installed."
   fi
 
 }
