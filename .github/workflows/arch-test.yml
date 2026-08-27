@@ -46,10 +46,61 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Create non-root MNCM test user
+        run: |
+          useradd \
+            --create-home \
+            --shell /bin/bash \
+            mncm-ci
+
+          echo "mncm-ci ALL=(ALL) NOPASSWD: ALL" \
+            > /etc/sudoers.d/mncm-ci
+
+          chmod 440 /etc/sudoers.d/mncm-ci
+
+          chown -R mncm-ci:mncm-ci "$GITHUB_WORKSPACE"
+
+          id mncm-ci
+
       - name: Repository validation
         run: |
           ./tests/check.sh
 
-      - name: Run Arch Linux tests
+      - name: Verify root protection
         run: |
-          ./tests/arch-container.sh
+          set +e
+
+          ./scripts/install.sh \
+            --profile minimal \
+            --no-dotfiles \
+            > /tmp/mncm-root-test.log 2>&1
+
+          STATUS=$?
+
+          set -e
+
+          cat /tmp/mncm-root-test.log
+
+          if [ "$STATUS" -eq 0 ]; then
+            echo "ERROR: Installer unexpectedly allowed root execution."
+            exit 1
+          fi
+
+          grep -q \
+            "Do not run the installer directly as root" \
+            /tmp/mncm-root-test.log
+
+          echo "✓ Installer correctly blocks direct root execution"
+
+      - name: Run Arch Linux tests as regular user
+        run: |
+          sudo -u mncm-ci \
+            env \
+              HOME=/home/mncm-ci \
+              USER=mncm-ci \
+              LOGNAME=mncm-ci \
+              CI=true \
+              GITHUB_ACTIONS=true \
+              GITHUB_WORKSPACE="$GITHUB_WORKSPACE" \
+            bash -lc \
+              'cd "$GITHUB_WORKSPACE" && ./tests/arch-container.sh'
