@@ -109,7 +109,7 @@ echo "==> Version"
 
 VERSION_VALUE="$(tr -d '[:space:]' < VERSION)"
 
-if [[ ! "$VERSION_VALUE" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+if [[ ! "$VERSION_VALUE" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
     fail "VERSION is not semantic version format: $VERSION_VALUE"
 fi
 

@@ -193,6 +193,31 @@ See:
 
 ---
 
+
+# Testing
+
+MNCM Labs uses both general repository validation and an Arch Linux container test.
+
+Local repository validation:
+
+    ./tests/check.sh
+
+macOS development-host planning:
+
+    ./scripts/install.sh --profile complete --plan-anywhere
+
+GitHub Actions additionally runs the project inside an Arch Linux container.
+
+See:
+
+    docs/TESTING.md
+
+Current release candidate:
+
+    v0.8.0-rc1
+
+---
+
 # Warning
 
 This project is under active development.

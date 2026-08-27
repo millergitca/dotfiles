@@ -1,0 +1,55 @@
+name: Test MNCM Labs on Arch Linux
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mncm-arch-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  arch-test:
+
+    name: Arch Linux container test
+
+    runs-on: ubuntu-latest
+
+    container:
+      image: archlinux:latest
+
+    steps:
+
+      - name: Install CI dependencies
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm \
+            git \
+            bash \
+            sudo \
+            rsync \
+            grep \
+            findutils \
+            coreutils
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Repository validation
+        run: |
+          ./tests/check.sh
+
+      - name: Run Arch Linux tests
+        run: |
+          ./tests/arch-container.sh
