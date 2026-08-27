@@ -54,11 +54,11 @@ heading() {
 }
 
 usage() {
-    cat <<USAGE
+    cat <<EOF
 
 MNCM Labs Dotfile Deployment v${VERSION}
 
-USAGE
+Usage:
 
   ./scripts/dotfiles.sh
 
@@ -73,9 +73,7 @@ USAGE
 
       Deploy one component.
 
-  ./scripts/dotfiles.sh --apply \
-      --component zsh \
-      --component ghostty
+  ./scripts/dotfiles.sh --apply --component zsh --component ghostty
 
       Deploy multiple selected components.
 
@@ -91,7 +89,15 @@ USAGE
 
       Restore a specific backup snapshot.
 
-SAFETY
+  ./scripts/dotfiles.sh --version
+
+      Display version.
+
+  ./scripts/dotfiles.sh --help
+
+      Display this help.
+
+Safety:
 
   Audit mode is the default.
 
@@ -101,7 +107,7 @@ SAFETY
 
   This tool does not delete unrelated files from your home directory.
 
-USAGE
+EOF
 }
 
 list_components() {
