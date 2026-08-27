@@ -1,54 +1,69 @@
-# Architecture
+# MNCM Labs Architecture
 
-## Goal
+MNCM Labs separates installation into layers.
 
-This repository provisions and maintains my personal Arch Linux development workstation.
+## Layer 1 — Package Definitions
 
-The project is designed around a simple principle:
+Directory:
 
-- bootstrap.sh orchestrates
-- install.sh installs dotfiles
-- lib/ contains reusable modules
+    packages/
 
-## Structure
+Package groups describe what should be installed.
 
-```
-bootstrap.sh
-install.sh
-lib/
-tests/
-docs/
-```
+Examples:
 
-## Libraries
+    core.txt
+    developer.txt
+    shell.txt
+    editor.txt
+    terminal.txt
+    desktop.txt
 
-- constants.sh
-- logging.sh
-- system.sh
-- packages.sh
-- shell.sh
-- docker.sh
-- directories.sh
-- git.sh
-- dotfiles.sh
-- verify.sh
+## Layer 2 — Installer
 
-Each library owns a single responsibility.
+    scripts/install.sh
 
-## Validation
+Responsibilities:
 
-Run:
+- profile selection
+- package planning
+- package installation
+- dotfile deployment orchestration
+- confirmation before changes
 
-```bash
-make check
-```
+## Layer 3 — Dotfiles
 
-before every commit.
+    scripts/dotfiles.sh
 
-## Philosophy
+Responsibilities:
 
-- Small commits
-- Reproducible workstation
-- Modular design
-- Keep ML4W as the desktop foundation
-- Keep personal configuration in ~/dotfiles
+- audit
+- backup
+- component deployment
+- restore
+
+## Layer 4 — Verification
+
+    scripts/health.sh
+    scripts/verify.sh
+
+Responsibilities:
+
+- read-only system inspection
+- package/tool checks
+- configuration checks
+- desktop checks
+- Docker checks
+- Neovim checks
+
+## Layer 5 — Documentation
+
+    docs/
+
+Provides installation, safety, architecture and troubleshooting information.
+
+## Design Principle
+
+The project intentionally separates package installation from configuration deployment.
+
+This makes it easier to test, audit and eventually replace individual pieces without rebuilding the entire bootstrap.

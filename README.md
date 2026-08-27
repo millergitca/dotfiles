@@ -133,6 +133,46 @@ See:
 
 ---
 
+# Health Check
+
+Verify an Arch Linux environment with:
+
+    ./scripts/health.sh
+
+Post-install verification:
+
+    ./scripts/verify.sh
+
+# Documentation
+
+Installation:
+
+    docs/INSTALL.md
+
+Troubleshooting:
+
+    docs/TROUBLESHOOTING.md
+
+Architecture:
+
+    docs/ARCHITECTURE.md
+
+Safety:
+
+    docs/SAFETY.md
+
+# Release Readiness
+
+Run:
+
+    ./scripts/release-check.sh
+
+Current development version:
+
+    0.7.0
+
+---
+
 # Warning
 
 This project is under active development.

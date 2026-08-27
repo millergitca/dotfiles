@@ -1,0 +1,33 @@
+name: Validate MNCM Labs
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  shell-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Bash syntax
+        run: |
+          bash -n scripts/bootstrap.sh
+          bash -n scripts/install.sh
+          bash -n scripts/dotfiles.sh
+          bash -n scripts/health.sh
+          bash -n scripts/verify.sh
+          bash -n scripts/release-check.sh
+          bash -n scripts/release.sh
+
+      - name: Check required files
+        run: |
+          test -s README.md
+          test -s VERSION
+          test -s CHANGELOG.md
+          test -s docs/INSTALL.md
+          test -s docs/SAFETY.md
+          test -s docs/TROUBLESHOOTING.md
+          test -s docs/ARCHITECTURE.md
