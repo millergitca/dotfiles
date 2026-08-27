@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-set -Eeuo pipefail
+set -Eeo pipefail
 
-VERSION="0.4.0"
+VERSION="0.4.1"
 
 SCRIPT_DIR="$(
     cd "$(dirname "${BASH_SOURCE[0]}")" &&
@@ -19,6 +19,9 @@ source "$SCRIPT_DIR/lib/common.sh"
 PROFILE=""
 APPLY=false
 WITH_DOTFILES=true
+PLAN_ANYWHERE=false
+ARCH_HOST=false
+MACOS_HOST=false
 
 PACKAGE_GROUPS=()
 COMPONENTS=()
@@ -52,6 +55,11 @@ Usage:
 
   ./scripts/install.sh --no-dotfiles
       Do not include dotfile deployment.
+
+  ./scripts/install.sh --plan-anywhere
+      Allow plan generation from a non-Arch development host.
+
+      This NEVER enables package installation.
 
   ./scripts/install.sh --version
       Show installer version.
@@ -104,40 +112,95 @@ validate_system() {
 
     mncm_ok "Running as regular user"
 
-    [[ -r /etc/os-release ]] ||
-        mncm_die "Unable to detect operating system."
+    local kernel
+    kernel="$(uname -s 2>/dev/null || echo unknown)"
 
-    source /etc/os-release
+    case "$kernel" in
 
-    mncm_info "Detected: ${PRETTY_NAME:-Unknown}"
+        Darwin)
+            MACOS_HOST=true
+            mncm_info "Detected: macOS development host"
 
-    if [[ "${ID:-}" != "arch" && "${ID_LIKE:-}" != *"arch"* ]]; then
-        mncm_die "MNCM Bootstrap currently targets Arch Linux."
-    fi
+            if [[ "$APPLY" == true ]]; then
+                mncm_die "Apply Mode is blocked on macOS. MNCM installation currently targets Arch Linux only."
+            fi
 
-    mncm_ok "Arch Linux detected"
+            if [[ "$PLAN_ANYWHERE" != true ]]; then
+                mncm_die "This is a macOS development host. Use --plan-anywhere to preview an Arch installation plan."
+            fi
 
-    command -v pacman >/dev/null 2>&1 ||
-        mncm_die "pacman not found."
+            mncm_ok "Development-host planning enabled"
+            ;;
 
-    mncm_ok "pacman available"
+        Linux)
 
-    command -v sudo >/dev/null 2>&1 ||
-        mncm_die "sudo not found."
+            [[ -r /etc/os-release ]] ||
+                mncm_die "Unable to detect Linux distribution."
 
-    mncm_ok "sudo available"
+            source /etc/os-release
 
-    command -v rsync >/dev/null 2>&1 ||
-        mncm_warn "rsync is not currently installed; core profile includes it."
+            mncm_info "Detected: ${PRETTY_NAME:-Unknown}"
 
-    if command -v ping >/dev/null 2>&1; then
-        if ping -c 1 -W 2 archlinux.org >/dev/null 2>&1; then
-            mncm_ok "Network appears available"
+            if [[ "${ID:-}" == "arch" || "${ID_LIKE:-}" == *"arch"* ]]; then
+                ARCH_HOST=true
+                mncm_ok "Arch Linux detected"
+            else
+
+                if [[ "$APPLY" == true ]]; then
+                    mncm_die "Apply Mode is supported on Arch Linux only."
+                fi
+
+                if [[ "$PLAN_ANYWHERE" != true ]]; then
+                    mncm_die "Unsupported Linux development host. Use --plan-anywhere for planning only."
+                fi
+
+                mncm_ok "Development-host planning enabled"
+            fi
+            ;;
+
+        *)
+            if [[ "$APPLY" == true ]]; then
+                mncm_die "Apply Mode is supported on Arch Linux only."
+            fi
+
+            if [[ "$PLAN_ANYWHERE" != true ]]; then
+                mncm_die "Unsupported host. Use --plan-anywhere for planning only."
+            fi
+
+            mncm_warn "Planning from unsupported development host: $kernel"
+            ;;
+
+    esac
+
+    if [[ "$ARCH_HOST" == true ]]; then
+
+        command -v pacman >/dev/null 2>&1 ||
+            mncm_die "pacman not found."
+
+        mncm_ok "pacman available"
+
+        command -v sudo >/dev/null 2>&1 ||
+            mncm_die "sudo not found."
+
+        mncm_ok "sudo available"
+
+        command -v rsync >/dev/null 2>&1 ||
+            mncm_warn "rsync is not currently installed; core profile includes it."
+
+        if command -v ping >/dev/null 2>&1; then
+
+            if ping -c 1 -W 2 archlinux.org >/dev/null 2>&1; then
+                mncm_ok "Network appears available"
+            else
+                mncm_warn "Network check did not succeed"
+            fi
+
         else
-            mncm_warn "Network check did not succeed"
+            mncm_warn "ping unavailable; network check skipped"
         fi
+
     else
-        mncm_warn "ping unavailable; network check skipped"
+        mncm_info "Arch-only system checks skipped on development host"
     fi
 }
 
@@ -319,6 +382,11 @@ load_packages() {
 calculate_missing() {
     MISSING_PACKAGES=()
 
+    if [[ "$ARCH_HOST" != true ]]; then
+        MISSING_PACKAGES=("${ALL_PACKAGES[@]}")
+        return 0
+    fi
+
     for package in "${ALL_PACKAGES[@]}"; do
         if ! pacman -Q "$package" >/dev/null 2>&1; then
             MISSING_PACKAGES+=("$package")
@@ -484,6 +552,11 @@ while (( $# > 0 )); do
             shift
             ;;
 
+        --plan-anywhere)
+            PLAN_ANYWHERE=true
+            shift
+            ;;
+
         --help|-h)
             usage
             exit 0
@@ -520,6 +593,11 @@ if [[ "$APPLY" == false ]]; then
 
     mncm_ok "Nothing was installed."
     mncm_ok "No configuration was changed."
+
+    if [[ "$ARCH_HOST" != true ]]; then
+        mncm_info "Plan generated from a development host."
+        mncm_info "Package state shown as planned rather than inspected."
+    fi
 
     printf "\n"
     printf "Run the same profile with --apply when ready.\n"
