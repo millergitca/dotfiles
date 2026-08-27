@@ -142,9 +142,12 @@ fi
 echo ""
 echo "==> Git whitespace"
 
-git diff --check
-
-pass "Git whitespace"
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    git diff --check
+    pass "Git whitespace"
+else
+    echo "! Git repository metadata unavailable — whitespace check skipped"
+fi
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
