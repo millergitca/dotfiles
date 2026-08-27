@@ -62,13 +62,41 @@ Audit mode does not intentionally install packages or deploy dotfiles.
 - [x] Waybar configuration
 - [x] Docker environment
 - [x] Bootstrap framework
-- [ ] Safe configuration backups
-- [ ] Dotfile deployment
+- [x] Safe configuration backups
+- [x] Dotfile deployment
 - [ ] Component selection
-- [ ] Restore support
+- [x] Restore support
 - [ ] Stable public installer
 
-## Warning
+## Safe Dotfile Deployment
+
+Phase 3 introduces modular configuration deployment.
+
+Audit the repository configuration:
+
+    ./scripts/dotfiles.sh
+
+Deploy every available component:
+
+    ./scripts/dotfiles.sh --apply --all
+
+Deploy one component:
+
+    ./scripts/dotfiles.sh --apply --component nvim
+
+List backup snapshots:
+
+    ./scripts/dotfiles.sh --backups
+
+Existing managed configuration is backed up before deployment.
+
+See:
+
+    docs/DOTFILES.md
+
+---
+
+# Warning
 
 This project is under active development.
 
