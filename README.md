@@ -64,7 +64,7 @@ Audit mode does not intentionally install packages or deploy dotfiles.
 - [x] Bootstrap framework
 - [x] Safe configuration backups
 - [x] Dotfile deployment
-- [ ] Component selection
+- [x] Component selection
 - [x] Restore support
 - [ ] Stable public installer
 
@@ -93,6 +93,43 @@ Existing managed configuration is backed up before deployment.
 See:
 
     docs/DOTFILES.md
+
+---
+
+# Modular Installer
+
+Phase 4 introduces installation profiles and modular package groups.
+
+Interactive planner:
+
+    ./scripts/install.sh
+
+Complete profile:
+
+    ./scripts/install.sh --profile complete
+
+Developer profile:
+
+    ./scripts/install.sh --profile developer
+
+Minimal profile:
+
+    ./scripts/install.sh --profile minimal
+
+Custom profile:
+
+    ./scripts/install.sh --profile custom
+
+The installer defaults to planning mode.
+
+Packages are not installed unless --apply is explicitly supplied.
+
+Package definitions live in the packages directory.
+
+See:
+
+    docs/INSTALLER.md
+    docs/PROFILES.md
 
 ---
 

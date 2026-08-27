@@ -1,0 +1,5 @@
+hyprland
+waybar
+hyprpaper
+hyprlock
+hypridle

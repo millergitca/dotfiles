@@ -19,7 +19,7 @@
 - [x] Package inspection
 - [ ] Safe backups
 - [ ] Dotfile deployment
-- [ ] Component selection
+- [x] Component selection
 - [ ] Restore system
 
 ## Public Release

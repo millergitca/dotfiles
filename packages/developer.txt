@@ -1,0 +1,8 @@
+docker
+docker-compose
+python
+python-pip
+nodejs
+npm
+go
+rustup
