@@ -24,3 +24,6 @@ lazy-lock.json.backup
 # Editor and OS noise
 .DS_Store
 Thumbs.db
+.mncm-patch-backup-*/
+README.md.backup-*
+scripts/*.backup-*

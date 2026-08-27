@@ -173,6 +173,26 @@ Current development version:
 
 ---
 
+# Development Hosts
+
+MNCM Labs installs onto Arch Linux, but repository development can happen from macOS.
+
+On macOS:
+
+    ./scripts/health.sh
+
+Preview an Arch installation plan:
+
+    ./scripts/install.sh --profile complete --plan-anywhere
+
+Apply Mode remains blocked unless the installer detects Arch Linux.
+
+See:
+
+    docs/DEVELOPMENT-HOSTS.md
+
+---
+
 # Warning
 
 This project is under active development.
