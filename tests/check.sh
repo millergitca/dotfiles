@@ -1,33 +1,153 @@
 #!/usr/bin/env bash
+
 set -Eeuo pipefail
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$PROJECT_ROOT"
+ROOT="$(
+    cd "$(dirname "${BASH_SOURCE[0]}")/.." &&
+    pwd
+)"
 
+cd "$ROOT"
+
+echo ""
+echo "MNCM LABS"
+echo "REPOSITORY VALIDATION"
+echo ""
+
+fail() {
+    echo "✗ $*"
+    exit 1
+}
+
+pass() {
+    echo "✓ $*"
+}
+
+echo "==> Required files"
+
+REQUIRED_FILES=(
+    README.md
+    VERSION
+    CHANGELOG.md
+    scripts/bootstrap.sh
+    scripts/install.sh
+    scripts/dotfiles.sh
+    scripts/health.sh
+    scripts/verify.sh
+    scripts/release-check.sh
+    scripts/release.sh
+    scripts/lib/common.sh
+    docs/INSTALL.md
+    docs/INSTALLER.md
+    docs/SAFETY.md
+    docs/TROUBLESHOOTING.md
+    docs/ARCHITECTURE.md
+    docs/DEVELOPMENT-HOSTS.md
+    packages/core.txt
+    packages/developer.txt
+    packages/shell.txt
+    packages/editor.txt
+    packages/terminal.txt
+    packages/desktop.txt
+)
+
+for file in "${REQUIRED_FILES[@]}"; do
+    [[ -s "$file" ]] || fail "Missing or empty: $file"
+    pass "$file"
+done
+
+echo ""
+echo "==> Executable scripts"
+
+EXECUTABLES=(
+    scripts/bootstrap.sh
+    scripts/install.sh
+    scripts/dotfiles.sh
+    scripts/health.sh
+    scripts/verify.sh
+    scripts/release-check.sh
+    scripts/release.sh
+)
+
+for file in "${EXECUTABLES[@]}"; do
+    [[ -x "$file" ]] || fail "Not executable: $file"
+    pass "$file"
+done
+
+echo ""
 echo "==> Bash syntax"
 
-bash -n bootstrap.sh
-bash -n install.sh
-
 while IFS= read -r -d '' file; do
-  bash -n "$file"
-done < <(find lib -type f -name '*.sh' -print0)
+    echo "Checking $file"
+    bash -n "$file"
+done < <(
+    find scripts \
+        -type f \
+        -name '*.sh' \
+        -print0
+)
 
-echo "✓ Bash syntax passed"
+pass "Bash syntax"
 
-echo
+echo ""
+echo "==> Package definitions"
+
+for file in packages/*.txt; do
+
+    [[ -s "$file" ]] ||
+        fail "Empty package file: $file"
+
+    if grep -E '^[[:space:]]+$' "$file" >/dev/null 2>&1; then
+        fail "Whitespace-only line found in $file"
+    fi
+
+    pass "$file"
+done
+
+echo ""
+echo "==> Version"
+
+VERSION_VALUE="$(tr -d '[:space:]' < VERSION)"
+
+if [[ ! "$VERSION_VALUE" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    fail "VERSION is not semantic version format: $VERSION_VALUE"
+fi
+
+pass "Version $VERSION_VALUE"
+
+echo ""
 echo "==> ShellCheck"
 
-shellcheck bootstrap.sh install.sh lib/*.sh
+if command -v shellcheck >/dev/null 2>&1; then
 
-echo "✓ ShellCheck passed"
+    mapfile -d '' SHELL_FILES < <(
+        find scripts \
+            -type f \
+            -name '*.sh' \
+            -print0
+    )
 
-echo
+    if (( ${#SHELL_FILES[@]} > 0 )); then
+        shellcheck \
+            --severity=error \
+            --external-sources \
+            "${SHELL_FILES[@]}"
+    fi
+
+    pass "ShellCheck"
+else
+    echo "! ShellCheck unavailable — skipped"
+fi
+
+echo ""
 echo "==> Git whitespace"
 
 git diff --check
 
-echo "✓ Git whitespace passed"
+pass "Git whitespace"
 
-echo
-echo "All checks passed."
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo " ALL REPOSITORY CHECKS PASSED"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
