@@ -88,6 +88,13 @@ done < <(
 )
 
 pass "Bash syntax"
+bash tests/host-plan.sh
+if command -v python3 >/dev/null 2>&1; then
+    PYTHONDONTWRITEBYTECODE=1 python3 tests/test-export.py
+    PYTHONDONTWRITEBYTECODE=1 python3 tests/planner-safety.py
+else
+    fail "python3 required for privacy-safe export tests"
+fi
 
 echo ""
 echo "==> Package definitions"
@@ -120,7 +127,10 @@ echo "==> ShellCheck"
 
 if command -v shellcheck >/dev/null 2>&1; then
 
-    mapfile -d '' SHELL_FILES < <(
+    SHELL_FILES=()
+    while IFS= read -r -d '' shell_file; do
+        SHELL_FILES+=("$shell_file")
+    done < <(
         find scripts \
             -type f \
             -name '*.sh' \

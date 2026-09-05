@@ -32,7 +32,7 @@ jobs:
       - name: Install ShellCheck
         run: |
           sudo apt-get update
-          sudo apt-get install --yes shellcheck
+          sudo apt-get install --yes shellcheck python3
 
       - name: Run MNCM Labs validation
         run: |

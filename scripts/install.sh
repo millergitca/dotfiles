@@ -2,7 +2,7 @@
 
 set -Eeo pipefail
 
-VERSION="0.4.1"
+VERSION=""
 
 SCRIPT_DIR="$(
     cd "$(dirname "${BASH_SOURCE[0]}")" &&
@@ -14,7 +14,9 @@ REPO_ROOT="$(
     pwd
 )"
 
+VERSION="$(tr -d '[:space:]' < "$REPO_ROOT/VERSION")"
 source "$SCRIPT_DIR/lib/common.sh"
+source "$SCRIPT_DIR/lib/host-plan.sh"
 
 PROFILE=""
 APPLY=false
@@ -365,10 +367,12 @@ load_packages() {
         [[ -f "$file" ]] ||
             mncm_die "Package group missing: $file"
 
-        while IFS= read -r package; do
+        while IFS= read -r package || [[ -n "$package" ]]; do
 
             [[ -n "$package" ]] || continue
             [[ "$package" != \#* ]] || continue
+            [[ "$package" =~ ^[a-zA-Z0-9][a-zA-Z0-9@._+-]*$ ]] ||
+                mncm_die "Invalid package name in group $group."
 
             if ! array_contains "$package" "${ALL_PACKAGES[@]}"; then
                 ALL_PACKAGES+=("$package")
@@ -398,6 +402,16 @@ show_plan() {
     mncm_heading "INSTALLATION PLAN"
 
     printf "\n"
+    local chassis="unknown" virtualization="unknown"
+    if [[ "$ARCH_HOST" == true ]]; then
+        if [[ -r /sys/class/dmi/id/chassis_type ]]; then
+            read -r chassis < /sys/class/dmi/id/chassis_type || chassis="unknown"
+        fi
+        if command -v systemd-detect-virt >/dev/null 2>&1; then
+            virtualization="$(systemd-detect-virt 2>/dev/null || true)"
+        fi
+    fi
+    printf "Hardware hint:    %s (advisory only)\n" "$(mncm_host_profile "$chassis" "$virtualization")"
     printf "Profile:          %s\n" "$PROFILE"
     printf "Package groups:   %s\n" "${#PACKAGE_GROUPS[@]}"
     printf "Packages total:   %s\n" "${#ALL_PACKAGES[@]}"
@@ -573,6 +587,10 @@ while (( $# > 0 )); do
 
     esac
 done
+
+if [[ "$PLAN_ANYWHERE" == true && "$APPLY" == true ]]; then
+    mncm_die "--plan-anywhere cannot be combined with --apply."
+fi
 
 mncm_banner
 
